@@ -42,13 +42,15 @@ INSERT INTO sightings (sighting_id, species_id, ranger_id, location, sighting_ti
 -- 1️⃣ Register a new ranger with provided data with name = 'Derek Fox' and region = 'Coastal Plains'
 INSERT INTO rangers (name , region) VALUES
 ('Derek Fox', 'Coastal Plains');
-
-
 SELECT * FROM rangers;
 
 -- 2  Count unique species ever sighted.
 
 SELECT * FROM species;
-SELECT * FROM sightings
+SELECT * FROM sightings;
 -- 3️⃣ Find all sightings where the location includes "Pass".
 WHERE location LIKE '%Pass';
+--4 List each ranger's name and their total number of sightings.
+SELECT rangers.name , count(*) as total_sightings FROM sightings
+JOIN rangers on sightings.ranger_id = rangers.ranger_id
+GROUP BY rangers.name 
