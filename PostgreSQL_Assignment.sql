@@ -67,9 +67,30 @@ WHERE location LIKE '%Pass';
 --4 List each ranger's name and their total number of sightings.
 SELECT rangers.name , count(*) as total_sightings FROM sightings
 JOIN rangers on sightings.ranger_id = rangers.ranger_id
-GROUP BY rangers.name 
--- 5 List species that have never been sighted.
+GROUP BY rangers.name  ;
 
+-- 5 List species that have never been sighted.
+SELECT *
+FROM species
+WHERE species_id NOT IN (SELECT species_id FROM sightings);
+
+--6 Show the most recent 2 sightings.
+SELECT 
+    sightings.sighting_time,
+    rangers.name AS ranger_name,
+    species.common_name AS species_name
+FROM sightings
+JOIN rangers ON sightings.ranger_id = rangers.ranger_id
+JOIN species ON sightings.species_id = species.species_id
+ORDER BY sightings.sighting_time DESC
+LIMIT 2;
+
+
+
+-- | common_name   | sighting_time        | name        |
+-- |---------------|----------------------|-------------|
+-- | Snow Leopard  | 2024-05-18 18:30:00  | Bob White   |
+-- | Red Panda     | 2024-05-15 09:10:00  | Carol King  |
 
 -- 2  Count unique species ever sighted.
 SELECT COUNT(DISTINCT species_id) as unique_species_count FROM sightings
