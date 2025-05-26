@@ -47,10 +47,21 @@ SELECT * FROM rangers;
 -- 2  Count unique species ever sighted.
 
 SELECT * FROM species;
-SELECT * FROM sightings;
+-- 7️⃣ Update all species discovered before year 1800 to have status 'Historic'.
+UPDATE species
+SET conservation_status = 'Historic'
+WHERE discovery_date < '1800-01-01';
+
+
+
+
+
+
+SELECT * FROM sightings
 -- 3️⃣ Find all sightings where the location includes "Pass".
 WHERE location LIKE '%Pass';
 --4 List each ranger's name and their total number of sightings.
 SELECT rangers.name , count(*) as total_sightings FROM sightings
 JOIN rangers on sightings.ranger_id = rangers.ranger_id
 GROUP BY rangers.name 
+-- 5 List species that have never been sighted.
