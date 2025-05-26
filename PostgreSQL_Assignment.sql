@@ -44,9 +44,13 @@ INSERT INTO rangers (name , region) VALUES
 ('Derek Fox', 'Coastal Plains');
 SELECT * FROM rangers;
 
--- 2  Count unique species ever sighted.
+
+
+
+
 
 SELECT * FROM species;
+
 -- 7️⃣ Update all species discovered before year 1800 to have status 'Historic'.
 UPDATE species
 SET conservation_status = 'Historic'
@@ -65,3 +69,7 @@ SELECT rangers.name , count(*) as total_sightings FROM sightings
 JOIN rangers on sightings.ranger_id = rangers.ranger_id
 GROUP BY rangers.name 
 -- 5 List species that have never been sighted.
+
+
+-- 2  Count unique species ever sighted.
+SELECT COUNT(DISTINCT species_id) as unique_species_count FROM sightings
