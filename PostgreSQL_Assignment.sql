@@ -58,21 +58,38 @@ WHERE discovery_date < '1800-01-01';
 
 
 
-
+-- DROP TABLE IF EXISTS sightings;
 
 
 SELECT * FROM sightings
 -- 3️⃣ Find all sightings where the location includes "Pass".
 WHERE location LIKE '%Pass';
+
+-- 8️⃣ Label each sighting's time of day as 'Morning', 'Afternoon', or 'Evening'.
+
+SELECT 
+    sighting_id, 
+    sighting_time,
+    CASE 
+        WHEN EXTRACT(HOUR FROM sighting_time) < 12 THEN 'Morning'
+        WHEN EXTRACT(HOUR FROM sighting_time) < 17 THEN 'Afternoon'
+        ELSE 'Evening'
+    END AS time_of_day
+FROM sightings
+
+
+
 --4 List each ranger's name and their total number of sightings.
 SELECT rangers.name , count(*) as total_sightings FROM sightings
 JOIN rangers on sightings.ranger_id = rangers.ranger_id
 GROUP BY rangers.name  ;
 
+
 -- 5 List species that have never been sighted.
 SELECT *
 FROM species
 WHERE species_id NOT IN (SELECT species_id FROM sightings);
+
 
 --6 Show the most recent 2 sightings.
 SELECT 
@@ -86,11 +103,12 @@ ORDER BY sightings.sighting_time DESC
 LIMIT 2;
 
 
-
--- | common_name   | sighting_time        | name        |
--- |---------------|----------------------|-------------|
--- | Snow Leopard  | 2024-05-18 18:30:00  | Bob White   |
--- | Red Panda     | 2024-05-15 09:10:00  | Carol King  |
-
 -- 2  Count unique species ever sighted.
 SELECT COUNT(DISTINCT species_id) as unique_species_count FROM sightings
+
+-- 9️⃣ Delete rangers who have never sighted any species
+DELETE FROM rangers
+WHERE ranger_id NOT IN (
+  SELECT DISTINCT ranger_id FROM sightings
+);
+
